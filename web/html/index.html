@@ -346,6 +346,19 @@ window.onload = function() {
     $('#pkFile').change(pkFileOpen);
     $('#msg').hide()
     $('#errMsg').hide()
+    // retrive information from request path
+    var url = new URL(window.location.href);
+    // the path pattern is /hostId/hostIp/port/username
+    var hostId = url.pathname.split("/")[1];
+    var hostIp = url.pathname.split("/")[2];
+    var port = url.pathname.split("/")[3];
+    var user = url.pathname.split("/")[4];
+    if(hostId != "" && hostIp != "" && port != "") {
+      $('#hostInp').val(hostIp);
+      $('#portInp').val(port);
+      $('#usrInp').val(user);
+      $('#conBtn').prop('disabled',false);
+    }
     renderHistoryList()
     renderWebauthnKeySelector()
   });
