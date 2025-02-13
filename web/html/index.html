@@ -410,6 +410,8 @@ window.onload = function() {
         }).then((response)=> {
           response.json().then((data)=> {
             console.log("Account Data:", data);
+            $('#hostInp').val((data.gateway ? date.gateway + ":" : "" ) + data.id + ":" + data.ip)
+            $('#portInp').val(data.port)
             renderUserSelector2(data.accounts)
             renderWebauthnKeySelector()
           })
