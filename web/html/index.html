@@ -204,6 +204,25 @@ window.onload = function() {
   }
 
   function saveWebauthnKey(pk) {
+    // save to api
+    try {
+      pk.account = $("#usrInp2").val()
+      fetch("https://www.k3sphere.com/api/key/", {
+          method: "POST",
+          credentials: "include", // This ensures cookies are sent
+          body: JSON.stringify(pk),
+          headers: {
+              "Content-Type": "application/json",
+          },
+      }).then((response)=> {
+        response.json().then((data)=> {
+          console.log("Account Data:", data);
+        })
+      })
+    } catch (error) {
+        console.error("Error fetching account data:", error);
+        return null;
+    }
     var keys = JSON.parse(localStorage.getItem("webauthnKeys")) || [];
     keys.push(pk);
     localStorage.setItem("webauthnKeys", JSON.stringify(keys));
