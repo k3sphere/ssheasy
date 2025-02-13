@@ -235,6 +235,22 @@ window.onload = function() {
     });
   }
 
+  function renderUserSelector(itemList) {
+    var listContainer = $('#usrInp');
+    listContainer.empty()
+    listContainer.append($('<option>', {
+        value: -1,
+        text: "Select user account"
+    }));
+    for(var i = 0, len = itemList.length; i < len; i++) {
+      var pk = itemList[i]; 
+      listContainer.append($('<option>', {
+          value: pk.name,
+          text: pk.name
+      }));
+    }
+  }
+
   getSelectedWebauthnKey = function() {
     var itemList = JSON.parse(localStorage.getItem("webauthnKeys"));
     return itemList[$('#webauthnKeySelect').val()]
@@ -346,8 +362,31 @@ window.onload = function() {
     $('#pkFile').change(pkFileOpen);
     $('#msg').hide()
     $('#errMsg').hide()
-    renderHistoryList()
-    renderWebauthnKeySelector()
+
+    // fetch data
+    try {
+       fetch("https://www.k3sphere.com/api/account", {
+            method: "GET",
+            credentials: "include", // This ensures cookies are sent
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }).then((response)=> {
+          response.json().then((body)=> {
+            console.log("Account Data:", data);
+            renderUserSelector(data.accounts)
+            renderHistoryList()
+            renderWebauthnKeySelector()
+          })
+        })
+
+
+    } catch (error) {
+        console.error("Error fetching account data:", error);
+        return null;
+    }
+
+
   });
   var home = "/";
 
@@ -504,7 +543,12 @@ li button {
       <div id="conPan" class="row" >  
         <div  class="container col-8 align-self-center" > 
           <div class="row" >
-            <input id="usrInp" type="text" placeholder="User" class="form-control col-3" value="root">
+            <div class="form-group col-3 nopad">
+              <label for="usrInp"></label>
+              <select class="form-control" id="usrInp">
+                <option selected>Select user account</option>
+              </select>
+            </div>
             <input id="hostInp" type="text" placeholder="Host to Connect" class="form-control col-5" value="testssh">
             <input id="portInp" type="number" placeholder="Port" class="form-control col-2" value="22">
             <div class="col-2">
