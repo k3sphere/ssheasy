@@ -454,6 +454,9 @@ window.onload = function() {
 
     </script>
     <style>
+      .hidden {
+        display: none;
+      }
       .iframe-container {
   overflow: hidden;
   padding-top: 56.25%;
@@ -619,7 +622,7 @@ li button {
               </label>
             </div>
           </div>
-          <div class="row">
+          <div class="row hidden">
               <input id="passInp" type="password" placeholder="Password/Passphrase" class="form-control col-3" value="root">
               <textarea id="pkInp" rows=1 placeholder="Private Key" class="form-control col-5"></textarea>
               <label class="btn btn-link col-2">
