@@ -372,7 +372,7 @@ window.onload = function() {
                 "Content-Type": "application/json",
             },
         }).then((response)=> {
-          response.json().then((body)=> {
+          response.json().then((data)=> {
             console.log("Account Data:", data);
             renderUserSelector(data.accounts)
             renderHistoryList()
