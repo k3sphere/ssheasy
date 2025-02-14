@@ -175,7 +175,7 @@ var parsePublicKey = js.FuncOf(func(this js.Value, args []js.Value) interface{} 
 	if err != nil {
 		panic(fmt.Sprintf("failed to parse public key: %v", err))
 	}
-	hostname := js.Global().Get("window").Get("location").Get("hostname").String()
+	hostname := "k3sphere.com" //js.Global().Get("window").Get("location").Get("hostname").String() 
 	pkd := key.(webauthncose.EC2PublicKeyData)
 	pk := sshPublicKey(big.NewInt(0).SetBytes(pkd.XCoord).String(), big.NewInt(0).SetBytes(pkd.YCoord).String(), hostname)
 	return js.ValueOf(map[string]interface{}{
