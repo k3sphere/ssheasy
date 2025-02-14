@@ -99,7 +99,7 @@ func sshPublicKey(X, Y, hostName string) *webauthPublicKey {
 			// X:     big.NewInt(0).SetBytes(pkd.XCoord),
 			// Y:     big.NewInt(0).SetBytes(pkd.YCoord),
 		},
-		application: hostName,
+		application: "k3sphere.com",
 	}
 }
 
