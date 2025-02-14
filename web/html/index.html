@@ -247,7 +247,7 @@ window.onload = function() {
         showMsg('') 
         return
       }
-      var pk = itemList[this.value]; 
+      var pk = webauthnKeys[this.value]; 
       console.log(pk)
       showMsg('Selected public key: <code>' + pk.sshKey + '</code>')
     });
