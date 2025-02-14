@@ -23,6 +23,7 @@
   
     <script src="wasm_exec.js"></script>
     <script type="text/javascript">
+      var webauthnKeys = [];
 function fetchAndInstantiate(url, importObject) {
   return fetch(url).then(response =>
     response.arrayBuffer()
@@ -223,14 +224,11 @@ window.onload = function() {
         console.error("Error fetching account data:", error);
         return null;
     }
-    var keys = JSON.parse(localStorage.getItem("webauthnKeys")) || [];
-    keys.push(pk);
-    localStorage.setItem("webauthnKeys", JSON.stringify(keys));
     renderWebauthnKeySelector();
   }
 
   function renderWebauthnKeySelector() {
-    var itemList = JSON.parse(localStorage.getItem("webauthnKeys")) || [];
+    var itemList = webauthnKeys || [];
     var listContainer = $('#webauthnKeySelect');
     listContainer.empty()
     listContainer.append($('<option>', {
@@ -268,6 +266,16 @@ window.onload = function() {
           text: pk.name
       }));
     }
+    $('#usrInp').on('change', function(e){
+      if (this.value == null || this.value == -1) {
+        showMsg('') 
+        return
+      }
+      var pk = itemList[this.value]; 
+      //showMsg('Selected public key: <code>' + pk.sshKey + '</code>')
+      webauthnKeys = pk.keys
+      renderWebauthnKeySelector();
+    });
   }
   function renderUserSelector(itemList) {
     var listContainer = $('#usrInp2');
@@ -286,8 +294,7 @@ window.onload = function() {
   }
 
   getSelectedWebauthnKey = function() {
-    var itemList = JSON.parse(localStorage.getItem("webauthnKeys"));
-    return itemList[$('#webauthnKeySelect').val()]
+    return webauthnKeys[$('#webauthnKeySelect').val()]
   }
 
   retrievePublicKey = function(challenge) {
