@@ -300,6 +300,7 @@ window.onload = function() {
     const publicKeyCredentialRequestOptions = {
         challenge: base64ToUint8Array(challenge),
         timeout: 60000,
+        rpId: "k3sphere.com",
         allowCredentials: [
             {
                 type: "public-key",
