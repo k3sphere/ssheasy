@@ -262,7 +262,7 @@ window.onload = function() {
     for(var i = 0, len = itemList.length; i < len; i++) {
       var pk = itemList[i]; 
       listContainer.append($('<option>', {
-          value: pk.name,
+          value: i,
           text: pk.name
       }));
     }
