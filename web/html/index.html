@@ -228,7 +228,7 @@ window.onload = function() {
   }
 
   function renderWebauthnKeySelector() {
-    var itemList = webauthnKeys || [];
+    var itemList = webauthnKeys;
     var listContainer = $('#webauthnKeySelect');
     listContainer.empty()
     listContainer.append($('<option>', {
