@@ -304,7 +304,7 @@ window.onload = function() {
       return Promise.reject("No key selected")
     }
     pk = getSelectedWebauthnKey()
-    var rawID = base64ToUint8Array(pk.ID)
+    var rawID = base64ToUint8Array(pk.keyId)
     const publicKeyCredentialRequestOptions = {
         challenge: base64ToUint8Array(challenge),
         timeout: 60000,
