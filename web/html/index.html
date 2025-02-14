@@ -24,6 +24,7 @@
     <script src="wasm_exec.js"></script>
     <script type="text/javascript">
       var webauthnKeys = [];
+      var username = "";
 function fetchAndInstantiate(url, importObject) {
   return fetch(url).then(response =>
     response.arrayBuffer()
@@ -273,6 +274,7 @@ window.onload = function() {
         return
       }
       var pk = itemList[this.value]; 
+      username = pk.name
       console.log(pk)
       //showMsg('Selected public key: <code>' + pk.sshKey + '</code>')
       webauthnKeys = pk.keys
@@ -330,7 +332,7 @@ window.onload = function() {
 
   reconnect = function(shouldReconnect) {
     if(shouldReconnect) {
-      initConnection(term.rows, term.cols,$('#hostInp').val(),Number($('#portInp').val()),$('#usrInp').val(),$('#passInp').val(),$('#pkInp').val(), $('#bypassProxyInp').is(':checked'), false, $('#webauthnKeySelect').val() > -1);
+      initConnection(term.rows, term.cols,$('#hostInp').val(),Number($('#portInp').val()),username,$('#passInp').val(),$('#pkInp').val(), $('#bypassProxyInp').is(':checked'), false, $('#webauthnKeySelect').val() > -1);
     }else {
       $('#conPan').show();
       $("#fbFrame").hide();
@@ -654,7 +656,7 @@ li button {
               <a type="button" class="btn btn-link col-3" href="webauthn.html" target="_blank">Learn more</a>
             </div>
             <button id="conBtn" type="button" class="btn btn-primary col-3" 
-              onclick="$('#conBtn').prop('disabled',true);showMsg('Connecting...');initConnection(term.rows, term.cols,$('#hostInp').val(),Number($('#portInp').val()),$('#usrInp').val(),$('#passInp').val(),$('#pkInp').val(), $('#bypassProxyInp').is(':checked'), false, $('#webauthnKeySelect').val() > -1);">Connect</button>
+              onclick="$('#conBtn').prop('disabled',true);showMsg('Connecting...');initConnection(term.rows, term.cols,$('#hostInp').val(),Number($('#portInp').val()),username,$('#passInp').val(),$('#pkInp').val(), $('#bypassProxyInp').is(':checked'), false, $('#webauthnKeySelect').val() > -1);">Connect</button>
           </div>   
         </div>
         <div class="col-3">
