@@ -354,7 +354,7 @@ window.onload = function() {
     var port = url.pathname.split("/")[3];
     var user = url.pathname.split("/")[4];
     if(hostId != "" && hostIp != "" && port != "") {
-      $('#hostInp').val(hostIp);
+      $('#hostInp').val(hostId + ":" + hostIp);
       $('#portInp').val(port);
       $('#usrInp').val(user);
       $('#conBtn').prop('disabled',false);
