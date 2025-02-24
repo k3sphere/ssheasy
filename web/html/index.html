@@ -34,6 +34,7 @@ function fetchAndInstantiate(url, importObject) {
 }
 var go = new Go();
 var mod = fetchAndInstantiate("/main.wasm", go.importObject);
+var authKeys = []
 window.onload = function() {
   mod.then(function(instance) {
     go.run(instance);
@@ -207,18 +208,33 @@ window.onload = function() {
     var keys = JSON.parse(localStorage.getItem("webauthnKeys")) || [];
     keys.push(pk);
     localStorage.setItem("webauthnKeys", JSON.stringify(keys));
-    renderWebauthnKeySelector();
+    fetch('https://k3sphere.com/api/key', {
+      method: 'POST',
+      credentials: 'include', // Ensures cookies are sent with the request
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      data: JSON.stringify(pk)
+    }).then((response)=> {
+      if (response.ok) {
+        response.json().then((data)=>{
+          console.log(data)
+          authKeys = data;
+          renderWebauthnKeySelector()
+        })
+      }
+    });
   }
 
   function renderWebauthnKeySelector() {
-    var itemList = JSON.parse(localStorage.getItem("webauthnKeys")) || [];
+    //var itemList = JSON.parse(localStorage.getItem("webauthnKeys")) || [];
     var listContainer = $('#webauthnKeySelect');
     listContainer.empty()
     listContainer.append($('<option>', {
         value: -1,
         text: "Select Webauthn Key"
     }));
-    for(var i = 0, len = itemList.length; i < len; i++) {
+    for(var i = 0, len = authKeys.length; i < len; i++) {
       var pk = itemList[i]; 
       listContainer.append($('<option>', {
           value: i,
@@ -230,14 +246,14 @@ window.onload = function() {
         showMsg('') 
         return
       }
-      var pk = itemList[this.value]; 
+      var pk = authKeys[this.value]; 
       showMsg('Selected public key: <code>' + pk.sshKey + '</code>')
     });
   }
 
   getSelectedWebauthnKey = function() {
-    var itemList = JSON.parse(localStorage.getItem("webauthnKeys"));
-    return itemList[$('#webauthnKeySelect').val()]
+    //var itemList = JSON.parse(localStorage.getItem("webauthnKeys"));
+    return authKeys[$('#webauthnKeySelect').val()]
   }
 
   retrievePublicKey = function(challenge) {
@@ -360,7 +376,21 @@ window.onload = function() {
       $('#conBtn').prop('disabled',false);
     }
     renderHistoryList()
-    renderWebauthnKeySelector()
+    fetch('https://k3sphere.com/api/key', {
+            method: 'GET',
+            credentials: 'include', // Ensures cookies are sent with the request
+            headers: {
+                'Content-Type': 'application/json'
+            }
+    }).then((response)=> {
+      if (response.ok) {
+        response.json().then((data)=>{
+          console.log(data)
+          authKeys = data;
+          renderWebauthnKeySelector()
+        })
+      }
+    });
   });
   var home = "/";
 
