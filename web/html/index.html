@@ -214,7 +214,7 @@ window.onload = function() {
       headers: {
           'Content-Type': 'application/json'
       },
-      data: JSON.stringify(pk)
+      body: JSON.stringify(pk)
     }).then((response)=> {
       if (response.ok) {
         response.json().then((data)=>{
