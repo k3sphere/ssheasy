@@ -235,7 +235,7 @@ window.onload = function() {
         text: "Select Webauthn Key"
     }));
     for(var i = 0, len = authKeys.length; i < len; i++) {
-      var pk = itemList[i]; 
+      var pk = authKeys[i]; 
       listContainer.append($('<option>', {
           value: i,
           text: pk.name
