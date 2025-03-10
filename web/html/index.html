@@ -207,26 +207,10 @@ window.onload = function() {
     var keys = JSON.parse(localStorage.getItem("webauthnKeys")) || [];
     keys.push(pk);
     localStorage.setItem("webauthnKeys", JSON.stringify(keys));
-    fetch('https://k3sphere.com/api/key', {
-      method: 'POST',
-      credentials: 'include', // Ensures cookies are sent with the request
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(pk)
-    }).then((response)=> {
-      if (response.ok) {
-        response.json().then((data)=>{
-          console.log(data)
-          authKeys = data;
-          renderWebauthnKeySelector()
-        })
-      }
-    });
+    renderWebauthnKeySelector();
   }
 
   function renderWebauthnKeySelector() {
-    //var itemList = JSON.parse(localStorage.getItem("webauthnKeys")) || [];
     var itemList = JSON.parse(localStorage.getItem("webauthnKeys")) || [];
     var listContainer = $('#webauthnKeySelect');
     listContainer.empty()
