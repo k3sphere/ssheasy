@@ -287,7 +287,7 @@ func con(host string, port int, bypassProxy string) (net.Conn, error) {
 	if l.Get("protocol").String() == "http:" {
 		wsProtocol = "ws://"
 	}
-	url := wsProtocol + l.Get("host").String() + "/" + bypassProxy
+	url := wsProtocol + l.Get("host").String() + "/p/" + bypassProxy
 
 	conn, err := ws.Dial(url)
 	if err != nil {
