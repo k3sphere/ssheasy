@@ -350,11 +350,11 @@ window.onload = function() {
     var url = new URL(window.location.href);
     // the path pattern is /hostId/hostIp/port/username
     console.log(url.pathname);
-    var region = url.pathname.split("/")[0];
-    var hostId = url.pathname.split("/")[1];
-    var hostIp = url.pathname.split("/")[2];
-    var port = url.pathname.split("/")[3];
-    var user = url.pathname.split("/")[4];
+    var region = url.pathname.split("/")[1];
+    var hostId = url.pathname.split("/")[2];
+    var hostIp = url.pathname.split("/")[3];
+    var port = url.pathname.split("/")[4];
+    var user = url.pathname.split("/")[5];
     if(region != "" && hostId != "" && hostIp != "" && port != "") {
       $('#regionInp').val(region);
       $('#hostInp').val(hostId + ":" + hostIp);
