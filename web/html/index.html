@@ -349,11 +349,11 @@ window.onload = function() {
     // retrive information from request path
     var url = new URL(window.location.href);
     // the path pattern is /hostId/hostIp/port/username
-    var region = url.pathname.split("/")[1];
-    var hostId = url.pathname.split("/")[2];
-    var hostIp = url.pathname.split("/")[3];
-    var port = url.pathname.split("/")[4];
-    var user = url.pathname.split("/")[5];
+    var region = url.pathname.split("/")[2];
+    var hostId = url.pathname.split("/")[3];
+    var hostIp = url.pathname.split("/")[4];
+    var port = url.pathname.split("/")[5];
+    var user = url.pathname.split("/")[6];
     if(region != "" && hostId != "" && hostIp != "" && port != "") {
       $('#regionInp').val(region);
       $('#hostInp').val(hostId + ":" + hostIp);
