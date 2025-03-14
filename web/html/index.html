@@ -269,7 +269,7 @@ window.onload = function() {
 
   reconnect = function(shouldReconnect) {
     if(shouldReconnect) {
-      initConnection(term.rows, term.cols,$('#hostInp').val(),Number($('#portInp').val()),$('#usrInp').val(),$('#passInp').val(),$('#pkInp').val(), $('#bypassProxyInp').is(':checked'), false, $('#webauthnKeySelect').val() > -1);
+      initConnection(term.rows, term.cols,$('#hostInp').val(),Number($('#portInp').val()),$('#usrInp').val(),$('#passInp').val(),$('#pkInp').val(), $('#regionInp').val(), false, $('#webauthnKeySelect').val() > -1);
     }else {
       $('#conPan').show();
       $("#fbFrame").hide();
@@ -349,11 +349,13 @@ window.onload = function() {
     // retrive information from request path
     var url = new URL(window.location.href);
     // the path pattern is /hostId/hostIp/port/username
-    var hostId = url.pathname.split("/")[1];
-    var hostIp = url.pathname.split("/")[2];
-    var port = url.pathname.split("/")[3];
-    var user = url.pathname.split("/")[4];
-    if(hostId != "" && hostIp != "" && port != "") {
+    var region = url.pathname.split("/")[1];
+    var hostId = url.pathname.split("/")[2];
+    var hostIp = url.pathname.split("/")[3];
+    var port = url.pathname.split("/")[4];
+    var user = url.pathname.split("/")[5];
+    if(region != "" && hostId != "" && hostIp != "" && port != "") {
+      $('#regionInp').val(region);
       $('#hostInp').val(hostId + ":" + hostIp);
       $('#portInp').val(port);
       $('#usrInp').val(user);
@@ -511,10 +513,11 @@ li button {
       <div id="conPan" class="row" >  
         <div  class="container col-8 align-self-center" > 
           <div class="row" >
+            <input id="regionInp" type="text" placeholder="Region" class="form-control col-3" value="eu-north-1">
             <input id="usrInp" type="text" placeholder="User" class="form-control col-3" value="root">
             <input id="hostInp" type="text" placeholder="Host to Connect" class="form-control col-5" value="testssh">
             <input id="portInp" type="number" placeholder="Port" class="form-control col-2" value="22">
-            <div class="col-2">
+            <div class="col-2" class="hidden">
               <label title="If checked then connection is not proxied through the websocket proxy of ssheasy, but it goes directly to the provided host and port. On the provided addrees a websocket proxy is expected to listen. Useful if you have your own proxy setup (like websockify or something similar).">
                 <input id="bypassProxyInp" type="checkbox" /> Bypass proxy
               </label>
@@ -539,7 +542,7 @@ li button {
               <a type="button" class="btn btn-link col-3" href="webauthn.html" target="_blank">Learn more</a>
             </div>
             <button id="conBtn" type="button" class="btn btn-primary col-3" 
-              onclick="$('#conBtn').prop('disabled',true);showMsg('Connecting...');initConnection(term.rows, term.cols,$('#hostInp').val(),Number($('#portInp').val()),$('#usrInp').val(),$('#passInp').val(),$('#pkInp').val(), $('#bypassProxyInp').is(':checked'), false, $('#webauthnKeySelect').val() > -1);">Connect</button>
+              onclick="$('#conBtn').prop('disabled',true);showMsg('Connecting...');initConnection(term.rows, term.cols,$('#hostInp').val(),Number($('#portInp').val()),$('#usrInp').val(),$('#passInp').val(),$('#pkInp').val(), $('#regionInp').val(), false, $('#webauthnKeySelect').val() > -1);">Connect</button>
           </div>   
         </div>
         <div class="col-3">

@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"io"
 	"log"
-	"strconv"
 	"syscall/js"
 
 	"net"
@@ -40,9 +39,9 @@ func main() {
 				return
 			}
 			host, port := args[2].String(), args[3].Int()
-			usr, pass, key, bypassProxy, bypassFingerprint, useWebauthKey := args[4].String(), args[5].String(), args[6].String(), args[7].Bool(), args[8].Bool(), args[9].Bool()
+			usr, pass, key, region, bypassFingerprint, useWebauthKey := args[4].String(), args[5].String(), args[6].String(), args[7].String(), args[8].Bool(), args[9].Bool()
 			var err error
-			sshCon, err = con(host, port, bypassProxy)
+			sshCon, err = con(host, port, region)
 			if err != nil {
 				js.Global().Call("showErr", fmt.Sprintf("cannot connect to host: %v", err))
 				return
@@ -282,24 +281,17 @@ func writeToConsole(str string) {
 	// fmt.Printf("writeToConsole: [%s] returned\n", str)
 }
 
-func con(host string, port int, bypassProxy bool) (net.Conn, error) {
+func con(host string, port int, bypassProxy string) (net.Conn, error) {
 	l := js.Global().Get("window").Get("location")
 	wsProtocol := "wss://"
 	if l.Get("protocol").String() == "http:" {
 		wsProtocol = "ws://"
 	}
-	url := wsProtocol + l.Get("host").String() + "/p"
-	if bypassProxy {
-		url = wsProtocol + host + ":" + strconv.FormatInt(int64(port), 10)
-	}
+	url := wsProtocol + l.Get("host").String() + "/" + bypassProxy
 
 	conn, err := ws.Dial(url)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open ws: %v", err)
-	}
-
-	if bypassProxy {
-		return conn, nil
 	}
 
 	var buf bytes.Buffer
