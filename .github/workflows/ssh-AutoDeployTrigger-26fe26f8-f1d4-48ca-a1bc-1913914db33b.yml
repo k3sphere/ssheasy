@@ -25,6 +25,10 @@ jobs:
         with:
           creds: ${{ secrets.SSH_AZURE_CREDENTIALS }}
 
+      - name: Replace CUSTOM_HEADER in nginx.conf
+        run: |
+          sed -i 's/CUSTOM_HEADER/${{ secrets.CUSTOM_HEADER }}/g' nginx/nginx.conf
+
       - name: Build and push container image to registry
         uses: azure/container-apps-deploy-action@v2
         with:
